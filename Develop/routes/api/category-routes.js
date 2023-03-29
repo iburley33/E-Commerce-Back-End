@@ -22,14 +22,24 @@ router.get('/:id', (req, res) => {
         model: Product,
       }
     }
-  ).then((bookData) => {
-    res.json(bookData);
+  ).then((categoryData) => {
+    res.json(categoryData);
   });
 });
 
 router.post('/', (req, res) => {
   // create a new category
-
+  Category.create({
+    id: req.body.id,
+    category_name: req.body.category_name,
+  })
+    .then((newCategory) => {
+      // Send the newly created row as a JSON object
+      res.json(newCategory);
+    })
+    .catch((err) => {
+      res.json(err);
+    });
 });
 
 router.put('/:id', (req, res) => {
@@ -42,9 +52,6 @@ router.put('/:id', (req, res) => {
       where: {
         id: req.params.id,
       },
-      include: {
-        model: Product,
-      }
     }
   )
     .then((updatedCategory) => {
@@ -54,7 +61,7 @@ router.put('/:id', (req, res) => {
 });
 
 router.delete('/:id', (req, res) => {
-  Book.destroy({
+  Category.destroy({
     where: {
       id: req.params.id,
     },
